@@ -11,7 +11,7 @@ implement your own strategy.
 #
 # License: BSD Style.
 
-from base import BaseUserNeighborhoodStrategy
+from .base import BaseUserNeighborhoodStrategy
 import numpy as np
 from ...similarities.basic_similarities import UserSimilarity
 from ...metrics.pairwise import euclidean_distances

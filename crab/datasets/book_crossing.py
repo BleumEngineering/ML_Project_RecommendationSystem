@@ -40,7 +40,7 @@ import zipfile
 from os.path import dirname
 from os.path import join
 import numpy as np
-from base import Bunch
+from .base import Bunch
 import csv
 
 logger = logging.getLogger(__name__)

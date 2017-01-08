@@ -105,13 +105,13 @@ class MatrixPreferenceDataModel(BaseDataModel):
              Build the data model
         '''
         #Is it important to store as numpy array ?
-        self._user_ids = np.asanyarray(self.dataset.keys())
+        self._user_ids = np.asanyarray(list(self.dataset.keys()))
         self._user_ids.sort()
 
         #Is it important to store as numpy array ?
         self._item_ids = []
-        for items in self.dataset.itervalues():
-            self._item_ids.extend(items.keys())
+        for items in list(self.dataset.values()):
+            self._item_ids.extend(list(items.keys()))
 
         self._item_ids = np.unique(np.array(self._item_ids))
         self._item_ids.sort()
@@ -495,11 +495,11 @@ class MatrixBooleanPrefDataModel(BaseDataModel):
              Build the data model
         '''
 
-        self._user_ids = np.asanyarray(self.dataset.keys())
+        self._user_ids = np.asanyarray(list(self.dataset.keys()))
         self._user_ids.sort()
 
         self._item_ids = np.array([])
-        for items in self.dataset.itervalues():
+        for items in list(self.dataset.values()):
             self._item_ids = np.append(self._item_ids, items)
 
         self._item_ids = np.unique(self._item_ids)

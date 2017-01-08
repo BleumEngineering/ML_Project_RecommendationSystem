@@ -9,7 +9,7 @@ a collection of vectors.
 
 
 import numpy as np
-from base import BaseSimilarity
+from .base import BaseSimilarity
 from ..metrics.pairwise import loglikehood_coefficient
 
 

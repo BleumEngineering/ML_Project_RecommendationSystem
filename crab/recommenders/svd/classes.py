@@ -15,7 +15,7 @@ can be subclassed).
 # License: BSD Style.
 import random
 
-from base import SVDRecommender
+from .base import SVDRecommender
 from ..knn.item_strategies import ItemsNeighborhoodStrategy
 import numpy as np
 from math import sqrt

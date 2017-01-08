@@ -11,7 +11,7 @@ This module contains main implementations that encapsulate
 
 import operator
 import numpy as np
-from base import RecommenderEvaluator
+from .base import RecommenderEvaluator
 from metrics import root_mean_square_error
 from metrics import mean_absolute_error
 from metrics import normalized_mean_absolute_error

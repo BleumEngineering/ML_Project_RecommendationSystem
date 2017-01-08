@@ -11,7 +11,7 @@ implement your own strategy.
 #
 # License: BSD Style.
 
-from base import BaseCandidateItemsStrategy
+from .base import BaseCandidateItemsStrategy
 import numpy as np
 
 
