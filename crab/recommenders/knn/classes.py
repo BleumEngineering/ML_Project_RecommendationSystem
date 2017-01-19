@@ -135,7 +135,7 @@ class ItemBasedRecommender(ItemRecommender):
                  Desired number of recommendations (default=None ALL)
 
         '''
-        self._set_params(**params)
+        #self._set_params(**params)
 
         candidate_items = self.all_other_items(user_id)
 
@@ -534,7 +534,7 @@ class UserBasedRecommender(UserRecommender):
                  for to_user_id in nearest_neighbors])
 
         prefs = prefs[~np.isnan(prefs)]
-        similarities = similarities[~np.isnan(prefs)]
+        similarities = similarities[np.where(~np.isnan(prefs))]
 
         prefs_sim = np.sum(prefs[~np.isnan(similarities)] *
                              similarities[~np.isnan(similarities)])
@@ -597,7 +597,7 @@ class UserBasedRecommender(UserRecommender):
 
         '''
 
-        self._set_params(**params)
+        #self._set_params(**params)
 
         candidate_items = self.all_other_items(user_id, **params)
 
@@ -689,8 +689,8 @@ class UserBasedRecommender(UserRecommender):
             prefs = np.array([1.0 for it in preferences])
             user_ids = np.array(preferences)
 
-        scores = prefs[~np.isnan(similarities)] * \
-             (1.0 + similarities[~np.isnan(similarities)])
+        scores = prefs[np.where(~np.isnan(similarities))] * \
+             (1.0 + similarities[np.where(~np.isnan(similarities))])
 
         sorted_preferences = np.lexsort((scores,))[::-1]
 
