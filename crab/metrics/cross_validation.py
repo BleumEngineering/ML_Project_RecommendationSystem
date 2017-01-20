@@ -208,7 +208,7 @@ class KFold(object):
         k = self.k
         j = ceil(n / k)
 
-        for i in xrange(k):
+        for i in range(k):
             test_index = np.zeros(n, dtype=np.bool)
             if i < k - 1:
                 test_index[i * j:(i + 1) * j] = True

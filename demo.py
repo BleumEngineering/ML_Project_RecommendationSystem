@@ -5,8 +5,6 @@ Created on Thu Jan  5 16:32:11 2017
 
 @author: forest
 """
-
-
 from crab.models.classes import MatrixPreferenceDataModel
 from crab.metrics.pairwise import euclidean_distances
 
@@ -18,6 +16,8 @@ from crab.recommenders.knn import UserBasedRecommender
 from crab.similarities.basic_similarities import ItemSimilarity
 from crab.recommenders.knn import ItemBasedRecommender
 from crab.recommenders.knn.item_strategies import ItemsNeighborhoodStrategy
+
+from crab.metrics.classes import CfEvaluator
 
 # setup data
 movies = {'Marcel Caraciolo': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,
@@ -71,6 +71,20 @@ print('4: total size - %i' %len(item_recomm_items))
 item_recomm_items = item_recsys.recommended_because('Leopoldo Pires', 'Just My Luck',2)
 print('5: recommendate_because by item similarity - %s' %item_recomm_items)
 print('5: total size - %i' %len(item_recomm_items))
+
+# Model evaluation - user based
+
+evaluator = CfEvaluator()
+all_scores = evaluator.evaluate(user_recsys, permutation=False)
+print('Evaluator Model: all scores - %s' %all_scores)
+
+rmse = evaluator.evaluate_on_split(user_recsys, metric='rmse', permutation=False)
+print('Evaluator Model: rmse on split')
+for k,v in rmse:
+    print('key - %s: value - %s', k, v)
+    
+
+
 
 
 
