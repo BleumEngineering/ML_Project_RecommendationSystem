@@ -467,17 +467,17 @@ class CfEvaluator(RecommenderEvaluator):
             for user_id, preferences in testing_set.items():
                 for item_id, preference in preferences:
                     #Estimate the preferences
-                    try:
-                        estimated = recommender_training.estimate_preference(
-                                    user_id, item_id)
-                        real_preferences.append(preference)
-                    except:
+                    #try:
+                    estimated = recommender_training.estimate_preference(
+                                user_id, item_id)
+                    real_preferences.append(preference)
+                    #except:
                         # It is possible that an item exists
                         #in the test data but
                         # not training data in which case
                         #an exception will be
                         # throw. Just ignore it and move on
-                        continue
+                    #    continue
                     estimated_preferences.append(estimated)
 
             #Return the error results.

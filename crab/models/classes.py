@@ -470,7 +470,7 @@ class MatrixBooleanPrefDataModel(BaseDataModel):
         or the {user_id:[item_id,item_id2,...],...}
         '''
         if dataset:
-            key = dataset.keys()[0]
+            key = list(dataset.keys())[0]
             if isinstance(dataset[key], dict):
                 for key in dataset:
                     dataset[key] = dataset[key].keys()

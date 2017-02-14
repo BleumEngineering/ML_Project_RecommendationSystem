@@ -5,13 +5,15 @@ Created on Thu Jan  5 16:32:11 2017
 
 @author: forest
 """
-from crab.models.classes import MatrixPreferenceDataModel
+from crab.models import MatrixPreferenceDataModel
+from crab.models import MatrixBooleanPrefDataModel
 from crab.metrics.pairwise import euclidean_distances
 
 from crab.recommenders.knn.neighborhood_strategies import AllNeighborsStrategy
 from crab.recommenders.knn.neighborhood_strategies import NearestNeighborsStrategy
 from crab.similarities.basic_similarities import UserSimilarity
 from crab.recommenders.knn import UserBasedRecommender
+from crab.recommenders.svd import MatrixFactorBasedRecommender
 
 from crab.similarities.basic_similarities import ItemSimilarity
 from crab.recommenders.knn import ItemBasedRecommender
@@ -39,7 +41,10 @@ movies = {'Marcel Caraciolo': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.
 'Penny Frewman': {'Snakes on a Plane': 4.5, 'You, Me and Dupree': 1.0, 'Superman Returns': 4.0},
 'Maria Gabriela': {}}
 
+
+# Example 1: ------Collabrative Filtering Algorithm ---MatrixPreferenceDataModel
 # test neighborhood strategy
+print('Collabrative Filtering Algorithm ---MatrixPreferenceDataModel:')
 model = MatrixPreferenceDataModel(movies)
 strategy = AllNeighborsStrategy()
 neighborhood_users = strategy.user_neighborhood('Lorena Abreu', model)
@@ -78,11 +83,53 @@ evaluator = CfEvaluator()
 all_scores = evaluator.evaluate(user_recsys, permutation=False)
 print('Evaluator Model: all scores - %s' %all_scores)
 
-rmse = evaluator.evaluate_on_split(user_recsys, metric='rmse', permutation=False)
-print('Evaluator Model: rmse on split')
-for k,v in rmse:
-    print('key - %s: value - %s', k, v)
-    
+#rmse = evaluator.evaluate_on_split(user_recsys)
+#print('Evaluator Model: rmse on split')
+#for k,v in rmse:
+#    print('key - %s: value - %s', k, v)
+
+# Example 2: ------SVD Algorithm ---MatrixPreferenceDataModel
+svd_item_recsys = MatrixFactorBasedRecommender( \
+        model=model, \
+        items_selection_strategy=items_strategy, \
+        n_features=2)
+svd_item_recomm_items = svd_item_recsys.recommend('Leopoldo Pires')
+print('6: recommdation by SVD Item Similarity - %s' %svd_item_recomm_items)
+print('6: total size - %i' %len(svd_item_recomm_items))
+
+# Example 2: ------CF Algorithm ---MatrixBooleanDataModel
+
+movies_boolean = {
+'Marcel Caraciolo': ['Lady in the Water', 'Snakes on a Plane',
+ 'Just My Luck', 'Superman Returns', 'You, Me and Dupree',
+ 'The Night Listener'],
+'Luciana Nunes': ['Lady in the Water', 'Snakes on a Plane',
+ 'Just My Luck', 'Superman Returns', 'The Night Listener',
+ 'You, Me and Dupree'],
+'Leopoldo Pires': ['Lady in the Water', 'Snakes on a Plane',
+ 'Superman Returns', 'The Night Listener'],
+'Lorena Abreu': ['Snakes on a Plane', 'Just My Luck',
+ 'The Night Listener', 'Superman Returns',
+ 'You, Me and Dupree'],
+'Steve Gates': ['Lady in the Water', 'Snakes on a Plane',
+ 'Just My Luck', 'Superman Returns', 'The Night Listener',
+ 'You, Me and Dupree'],
+'Sheldom': ['Lady in the Water', 'Snakes on a Plane',
+ 'The Night Listener', 'Superman Returns', 'You, Me and Dupree'],
+'Penny Frewman': ['Snakes on a Plane', 'You, Me and Dupree', 'Superman Returns'],
+'Maria Gabriela': []
+}    
+
+songs_boolean = {1: [1, 2, 3, 4, 5, 6, 7], 2: [1, 2, 3, 5, 6],
+                3: [1, 2, 3, 4, 5, 6], 4: [1, 3, 4, 5, 6, 7, 8],
+                5: [1, 2, 3, 4, 6, 7, 8], 6: [2, 3, 4, 6, 7, 8],
+                7: [2, 3, 4, 5, 6, 8], 8: [8, 1, 4, 5, 7]}
+
+boolean_model = MatrixBooleanPrefDataModel(movies_boolean)
+boolean_user_recsys = UserBasedRecommender(boolean_model, user_similarity, user_strategy)
+boolean_user_recomm_items = user_recsys.recommend('Leopoldo Pires')
+print('7: Boolean recommendation by user similarity - %s' %boolean_user_recomm_items)
+print('7: total size - %i' %len(boolean_user_recomm_items))
 
 
 
